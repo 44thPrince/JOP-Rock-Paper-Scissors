@@ -1,0 +1,252 @@
+Controller.class
+-------------------------------
+public class Controller {
+  String playerOrComputer;
+  
+  boolean running = true;
+  
+  Player Player1 = new Player();
+  
+  Player Player2 = new Player();
+  
+  Player Computer = new Player();
+  
+  public Controller() {
+    while (true) {
+      this.playerOrComputer = JOP.in("Choose player versus player (enter pvp) or player versus computer (enter pvc). Click cancel to quit AT ANY TIME. \n The current high scores are: Player 1: " + this.Player1
+          .getHighScore() + ", Player 2: " + this.Player2.getHighScore() + " and Computer: " + this.Computer.getHighScore());
+      update();
+    } 
+  }
+  
+  public void update() {
+    this.running = true;
+    if (this.playerOrComputer.equalsIgnoreCase("pvp")) {
+      playerVsPlayer();
+    } else if (this.playerOrComputer.equalsIgnoreCase("pvc")) {
+      playerVsComputer();
+    } else {
+      this.playerOrComputer = "";
+      JOP.msg("Enter either pvp or pvc or click cancel to quit.");
+    } 
+  }
+  
+  //Checks if player wants player versus player or player versus computer
+  
+  public void playerVsPlayer() {
+    while (this.running) {
+      JOP.msg("The current score is " + this.Player1.getScore() + " for player one, and " + this.Player2.getScore() + " for player two.");
+      JOP.msg("It's player one's turn, look away player two!");
+      this.Player1.inputGuess();
+      JOP.msg("It's player two's turn!");
+      this.Player2.inputGuess();
+      getWinnerPVP();
+      this.playerOrComputer = "";
+    } 
+  }
+  
+  //Handles player versus player mode
+  
+  public void playerVsComputer() {
+    while (this.running) {
+      JOP.msg("The current score is " + this.Player1.getScore() + " for player one, and " + this.Computer.getScore() + " for computer.");
+      JOP.msg("It's your turn player one!");
+      this.Player1.inputGuess();
+      JOP.msg("It's the computer's turn!");
+      this.Computer.computerGuess();
+      getWinnerPVC();
+      this.playerOrComputer = "";
+    } 
+  }
+  
+  //Handles player versus player mode
+  
+  public void getWinnerPVP() {
+    if (this.Player1.getGuess().equalsIgnoreCase("rock") && this.Player2.getGuess().equalsIgnoreCase("paper")) {
+      this.Player2.increment();
+      JOP.msg("Player one guessed " + this.Player1.getGuess() + " and player two guessed " + this.Player2.getGuess() + ". Player two wins the round!");
+    } else if (this.Player1.getGuess().equalsIgnoreCase("paper") && this.Player2.getGuess().equalsIgnoreCase("scissors")) {
+      this.Player2.increment();
+      JOP.msg("Player one guessed " + this.Player1.getGuess() + " and player two guessed " + this.Player2.getGuess() + ". Player two wins the round!");
+    } else if (this.Player1.getGuess().equalsIgnoreCase("scissors") && this.Player2.getGuess().equalsIgnoreCase("rock")) {
+      this.Player2.increment();
+      JOP.msg("Player one guessed " + this.Player1.getGuess() + " and player two guessed " + this.Player2.getGuess() + ". Player two wins the round!");
+    } else if (this.Player1.getGuess().equalsIgnoreCase("paper") && this.Player2.getGuess().equalsIgnoreCase("rock")) {
+      this.Player1.increment();
+      JOP.msg("Player one guessed " + this.Player1.getGuess() + " and player two guessed " + this.Player2.getGuess() + ". Player one wins the round!");
+    } else if (this.Player1.getGuess().equalsIgnoreCase("scissors") && this.Player2.getGuess().equalsIgnoreCase("paper")) {
+      this.Player1.increment();
+      JOP.msg("Player one guessed " + this.Player1.getGuess() + " and player two guessed " + this.Player2.getGuess() + ". Player one wins the round!");
+    } else if (this.Player1.getGuess().equalsIgnoreCase("rock") && this.Player2.getGuess().equalsIgnoreCase("scissors")) {
+      this.Player1.increment();
+      JOP.msg("Player one guessed " + this.Player1.getGuess() + " and player two guessed " + this.Player2.getGuess() + ". Player one wins the round!");
+    } else {
+      JOP.msg("It's a tie! On to the next round.");
+    } 
+    if (this.Player1.getScore() >= 2) {
+      this.Player2.resetHighScore();
+      this.Player2.resetRoundScore();
+      this.Player1.resetRoundScore();
+      this.Player1.incrementHighScore();
+      JOP.msg("Player one wins the game!");
+      this.running = false;
+    } 
+    if (this.Player2.getScore() >= 2) {
+      this.Player1.resetHighScore();
+      this.Player1.resetRoundScore();
+      this.Player2.resetRoundScore();
+      this.Player2.incrementHighScore();
+      JOP.msg("Player two wins the game!");
+      this.running = false;
+    } 
+  }
+  
+  //Gets the winner in player versus player mode if there is one and updates the scoreboard
+  
+  public void getWinnerPVC() {
+    if (this.Player1.getGuess().equalsIgnoreCase("rock") && this.Computer.getGuess().equalsIgnoreCase("paper")) {
+      this.Computer.increment();
+      JOP.msg("Player one guessed " + this.Player1.getGuess() + " and computer guessed " + this.Computer.getGuess() + ". Computer wins the round!");
+    } else if (this.Player1.getGuess().equalsIgnoreCase("paper") && this.Computer.getGuess().equalsIgnoreCase("scissors")) {
+      this.Computer.increment();
+      JOP.msg("Player one guessed " + this.Player1.getGuess() + " and computer guessed " + this.Computer.getGuess() + ". Computer wins the round!");
+    } else if (this.Player1.getGuess().equalsIgnoreCase("scissors") && this.Computer.getGuess().equalsIgnoreCase("rock")) {
+      this.Computer.increment();
+      JOP.msg("Player one guessed " + this.Player1.getGuess() + " and computer guessed " + this.Computer.getGuess() + ". Computer wins the round!");
+    } else if (this.Player1.getGuess().equalsIgnoreCase("paper") && this.Computer.getGuess().equalsIgnoreCase("rock")) {
+      this.Player1.increment();
+      JOP.msg("Player one guessed " + this.Player1.getGuess() + " and computer guessed " + this.Computer.getGuess() + ". Player one wins the round!");
+    } else if (this.Player1.getGuess().equalsIgnoreCase("scissors") && this.Computer.getGuess().equalsIgnoreCase("paper")) {
+      this.Player1.increment();
+      JOP.msg("Player one guessed " + this.Player1.getGuess() + " and computer guessed " + this.Computer.getGuess() + ". Player one wins the round!");
+    } else if (this.Player1.getGuess().equalsIgnoreCase("rock") && this.Computer.getGuess().equalsIgnoreCase("scissors")) {
+      this.Player1.increment();
+      JOP.msg("Player one guessed " + this.Player1.getGuess() + " and computer guessed " + this.Computer.getGuess() + ". Player one wins the round!");
+    } else {
+      JOP.msg("It's a tie! On to the next round.");
+    } 
+    if (this.Computer.getScore() >= 2) {
+      this.Player1.resetHighScore();
+      this.Player1.resetRoundScore();
+      this.Computer.resetRoundScore();
+      this.Computer.incrementHighScore();
+      JOP.msg("Computer wins the game!");
+      this.running = false;
+    } 
+    if (this.Player1.getScore() >= 2) {
+      this.Computer.resetHighScore();
+      this.Computer.resetRoundScore();
+      this.Player1.resetRoundScore();
+      this.Player1.incrementHighScore();
+      JOP.msg("Player one wins the game!");
+      this.running = false;
+    } 
+  }
+  //Gets the winner in player versus computer mode if there is one and updates the scoreboard
+}
+JOP.class
+-------------------------------
+import java.awt.Component;
+import javax.swing.JOptionPane;
+
+public class JOP {
+  public static void msg(String msg) {
+    JOptionPane.showMessageDialog((Component)null, msg);
+  }
+  
+  //Displays parameter msg
+  
+  public static String in(String msg) {
+    return JOptionPane.showInputDialog(msg);
+  }
+  //Displays parameter msg and takes string input
+}
+Main.class
+-------------------------------
+public class Main {
+  public static void main(String[] args) {
+    try {
+      Controller controller = new Controller();
+    } catch (Exception O) {
+      System.exit(0);
+    } 
+  }
+  
+  //Starts the controller on program start and exits if an error occurs
+}
+Player.class
+-------------------------------
+import java.util.Random;
+
+public class Player {
+  private String guess;
+  
+  private int roundScore = 0;
+  
+  private int highScore = 0;
+  
+  public int getScore() {
+    return this.roundScore;
+  }
+  
+  public int getHighScore() {
+    return this.highScore;
+  }
+  
+  public void increment() {
+    this.roundScore++;
+  }
+  
+  //Increments roundScore
+  
+  public void incrementHighScore() {
+    this.highScore++;
+  }
+  
+  //Increments highScore
+  
+  public void resetRoundScore() {
+    this.roundScore = 0;
+  }
+  
+  //Resets roundScore to 0
+  
+  public void resetHighScore() {
+    this.highScore = 0;
+  }
+  
+  //Resets highScore to 0
+  
+  Random random = new Random();
+  
+  public void inputGuess() {
+    boolean valid = false;
+    while (!valid) {
+      this.guess = JOP.in("Pick rock, paper or scissors.");
+      if (!this.guess.equalsIgnoreCase("rock") && !this.guess.equalsIgnoreCase("paper") && !this.guess.equalsIgnoreCase("scissors")) {
+        JOP.msg("Enter a valid input.");
+        continue;
+      } 
+      valid = true;
+    } 
+  }
+  
+  //Takes a player input (rock, paper or scissors) and continues if valid, otherwise repeats
+  
+  public void computerGuess() {
+    int computerNum = this.random.nextInt(2);
+    if (computerNum == 0) {
+      this.guess = "rock";
+    } else if (computerNum == 1) {
+      this.guess = "paper";
+    } else {
+      this.guess = "scissors";
+    } 
+  }
+  
+  //Randomly generates a computer input (rock, paper or scissors)
+  
+  public String getGuess() {
+    return this.guess;
+  }
+}
